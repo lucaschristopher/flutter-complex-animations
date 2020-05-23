@@ -42,18 +42,8 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
     );
 
     // Linear mapping of animation from 0 to 1, to 0 to 300
-    animation = Tween<double>(begin: 0, end: 300).animate(_animationController)
-      // The ".." operator is the same as repeating: animation = [...]; animation.addStatus[...]
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          _animationController.reverse();
-        } else if (status == AnimationStatus.dismissed) {
-          _animationController.forward();
-        }
-      });
-
-    otherAnimation = Tween<double>(begin: 0, end: 150).animate(
-        _animationController)
+    animation = CurvedAnimation(
+        parent: _animationController, curve: Curves.elasticOut)
       // The ".." operator is the same as repeating: animation = [...]; animation.addStatus[...]
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
@@ -74,37 +64,12 @@ class _LogoAppState extends State<LogoApp> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        GrowTransition(
-          child: LogoWidget(),
-          animation: animation,
-        ),
-        GrowTransition(
-          child: LogoWidget(),
-          animation: otherAnimation,
-        )
-      ],
+    return SizeAndOpacityTransition(
+      child: LogoWidget(),
+      animation: animation,
     );
   }
 }
-
-/* class AnimatedLogo extends AnimatedWidget {
-  AnimatedLogo(Animation<double> animation) : super(listenable: animation);
-
-  @override
-  Widget build(BuildContext context) {
-    final Animation<double> animation = listenable;
-
-    return Center(
-      child: Container(
-        height: animation.value,
-        width: animation.value,
-        child: FlutterLogo(),
-      ),
-    );
-  }
-} */
 
 class LogoWidget extends StatelessWidget {
   @override
@@ -115,11 +80,14 @@ class LogoWidget extends StatelessWidget {
   }
 }
 
-class GrowTransition extends StatelessWidget {
+class SizeAndOpacityTransition extends StatelessWidget {
   final Widget child;
   final Animation animation;
 
-  GrowTransition({this.child, this.animation});
+  final sizeTween = Tween<double>(begin: 0, end: 300);
+  final opacityTween = Tween<double>(begin: 0.1, end: 1);
+
+  SizeAndOpacityTransition({this.child, this.animation});
 
   @override
   Widget build(BuildContext context) {
@@ -127,10 +95,13 @@ class GrowTransition extends StatelessWidget {
       child: AnimatedBuilder(
         animation: animation,
         builder: (context, child) {
-          return Container(
-            height: animation.value,
-            width: animation.value,
-            child: child,
+          return Opacity(
+            opacity: opacityTween.evaluate(animation).clamp(0, 1.0),
+            child: Container(
+              height: sizeTween.evaluate(animation),
+              width: sizeTween.evaluate(animation),
+              child: child,
+            ),
           );
         },
         child: child,
