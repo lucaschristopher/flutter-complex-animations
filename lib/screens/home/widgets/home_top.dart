@@ -1,3 +1,4 @@
+import 'package:complex_animations/screens/home/widgets/category_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeTop extends StatelessWidget {
@@ -10,7 +11,7 @@ class HomeTop extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
     return Container(
-      height: screenSize.height * 0.3,
+      height: screenSize.height * 0.4,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage("images/background.jpg"),
@@ -59,6 +60,7 @@ class HomeTop extends StatelessWidget {
                 ),
               ),
             ),
+            CategoryView(),
           ],
         ),
       ),

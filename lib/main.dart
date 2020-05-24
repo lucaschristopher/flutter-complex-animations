@@ -1,3 +1,4 @@
+import 'package:complex_animations/screens/home/home_screen.dart';
 import 'package:complex_animations/screens/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: HomeScreen(),
     );
   }
 }

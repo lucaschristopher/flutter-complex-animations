@@ -20,7 +20,9 @@ class InputFormField extends StatelessWidget {
       ),
       child: TextFormField(
         obscureText: obscure,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(
+          color: Colors.white,
+        ),
         decoration: InputDecoration(
           icon: Icon(
             icon,
